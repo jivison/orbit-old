@@ -1,30 +1,28 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <!-- <div>
+    <h1>My Event</h1>
+    <p>Capacity: {{ capacity }}</p>
+    <button @click="increaseCapacity()">Increase Capacity</button>
+  </div> -->
+  <track-list />
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { ref } from "vue";
+import TrackList from "./views/TrackList.vue";
 
-#nav {
-  padding: 30px;
+export default {
+  components: {
+    TrackList,
+  },
+  // setup() {
+  //   const capacity = ref(3);
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  //   function increaseCapacity() {
+  //     capacity.value++;
+  //   }
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  //   return { capacity, increaseCapacity };
+  // },
+};
+</script>

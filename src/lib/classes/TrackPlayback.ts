@@ -28,7 +28,6 @@ export class TrackPlayback {
   pause() {
     if (this.audioElement) {
       this.audioElement.pause();
-      this.isPlaying = false;
     }
   }
 
@@ -48,6 +47,10 @@ export class TrackPlayback {
 
     audioElement.onplay = (() => {
       this.isPlaying = true;
+    }).bind(this);
+
+    audioElement.onpause = (() => {
+      this.isPlaying = false;
     }).bind(this);
 
     return audioElement;

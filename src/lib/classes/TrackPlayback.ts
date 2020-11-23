@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { createDataURL, MimeAudioFormat } from "../dataUrl";
+import { createDataURL, MimeFormat } from "../dataUrl";
 import { EventEmitter } from "../EventEmitter";
 
 export type PlaybackEventListener = (playback: TrackPlayback) => void;
@@ -75,6 +75,6 @@ export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
 
   private async load(path: string) {
     const songFile = readFileSync(path);
-    return createDataURL(songFile, MimeAudioFormat.mp3);
+    return createDataURL(songFile, MimeFormat.mp3);
   }
 }

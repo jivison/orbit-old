@@ -1,31 +1,23 @@
 <template>
-  <!-- <div>
-    <h1>My Event</h1>
-    <p>Capacity: {{ capacity }}</p>
-    <button @click="increaseCapacity()">Increase Capacity</button>
-  </div> -->
-  <player />
-  <track-list />
+  <div id="app">
+    <svg-sprite />
+    <track-list />
+    <player />
+  </div>
 </template>
 
 <script lang="ts">
 import { ref } from "vue";
 import TrackList from "./views/TrackList.vue";
 import Player from "./views/Player.vue";
+import SvgSprite from "./components/svg/SvgSprite.vue";
 
 export default {
   components: {
     TrackList,
     Player: Player,
+    SvgSprite,
   },
-  // setup() {
-  //   const capacity = ref(3);
-
-  //   function increaseCapacity() {
-  //     capacity.value++;
-  //   }
-
-  //   return { capacity, increaseCapacity };
-  // },
 };
 </script>
+

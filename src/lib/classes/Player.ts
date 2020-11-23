@@ -1,7 +1,14 @@
 import { EventEmitter } from "../EventEmitter";
+import { Track } from "./Track";
 import { PlaybackEventListeners, TrackPlayback } from "./TrackPlayback";
 
-export class Player extends EventEmitter<PlaybackEventListeners> {
+export interface PlayerEventListeners {
+  trackChange: ((player: Player, track: Track) => void)[];
+}
+
+export class Player extends EventEmitter<
+  PlaybackEventListeners & PlayerEventListeners
+> {
   private static instance?: Player;
 
   private constructor() {
@@ -9,6 +16,7 @@ export class Player extends EventEmitter<PlaybackEventListeners> {
       play: [],
       pause: [],
       ended: [],
+      trackChange: [],
     });
   }
 
@@ -19,11 +27,15 @@ export class Player extends EventEmitter<PlaybackEventListeners> {
 
   // Intance methods
   private playback?: TrackPlayback;
+  private track?: Track;
 
   public isPlaying: boolean = false;
 
-  private setPlayback(playback: TrackPlayback) {
-    if (this.playback === playback) return;
+  private setPlayback(track: Track) {
+    if (this.track === track) return;
+
+    const playback = track.playback;
+    this.track = track;
 
     if (this.playback?.isPlaying) this.playback.stop();
     this.playback = playback;
@@ -55,17 +67,19 @@ export class Player extends EventEmitter<PlaybackEventListeners> {
     this.playback = undefined;
   }
 
-  public play(playback?: TrackPlayback) {
-    if (playback && this.playback !== playback) {
-      this.setPlayback(playback);
+  public play(track?: Track) {
+    if (track && this.track !== track) {
+      this.setPlayback(track);
+      this.triggerEvent("trackChange", track);
     }
 
     this.playback?.play();
   }
 
-  public playPause(playback?: TrackPlayback) {
-    if (playback && this.playback !== playback) {
-      this.setPlayback(playback);
+  public playPause(track?: Track) {
+    if (track && this.track !== track) {
+      this.setPlayback(track);
+      this.triggerEvent("trackChange", track);
     }
 
     this.playback?.playPause();

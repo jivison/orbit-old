@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Mukta";
+  src: url("~@/assets/fonts/Mukta-Regular.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "Nanum Gothic";
+  src: url("~@/assets/fonts/NanumGothic-Regular.ttf") format("ttf");
+}
+
+html {
+  font-family: "Mukta", "Nanum Gothic", sans-serif;
+}

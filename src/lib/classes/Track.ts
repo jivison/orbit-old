@@ -9,7 +9,7 @@ import { TrackPlayback } from "./TrackPlayback";
 export class Track {
   public tags: Tags = {};
   public filepath: string;
-  private playback: TrackPlayback;
+  public playback: TrackPlayback;
 
   get isPlaying(): boolean {
     return this.playback.isPlaying;
@@ -38,6 +38,6 @@ export class Track {
   }
 
   public play() {
-    Player.getInstance().play(this.playback);
+    Player.getInstance().play(this);
   }
 }

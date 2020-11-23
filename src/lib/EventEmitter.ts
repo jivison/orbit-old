@@ -1,4 +1,4 @@
-type ListenerFunction = (object: any) => void;
+type ListenerFunction = (...args: any[]) => void;
 
 export abstract class EventEmitter<Listeners extends object> {
   private listeners: Listeners;
@@ -20,9 +20,9 @@ export abstract class EventEmitter<Listeners extends object> {
     }
   }
 
-  protected triggerEvent(event: keyof Listeners) {
+  protected triggerEvent(event: keyof Listeners, ...args: any[]) {
     for (let listener of this.listeners[event] as any) {
-      listener(this);
+      listener(this, ...args);
     }
   }
 }

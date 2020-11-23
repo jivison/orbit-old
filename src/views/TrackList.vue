@@ -1,20 +1,19 @@
 <template>
   <div class="TrackList">
     <div v-if="tracks.length">
-      <li v-for="track in tracks" :key="track">
-        {{ track.toString() }}
-        <button @click="play(track)">Play</button>
-      </li>
+      <track-item v-for="track in tracks" v-bind:track="track" :key="track" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import TrackItem from "@/components/TrackItem.vue";
 import { defineComponent } from "vue";
 import { Track } from "../lib/classes/Track";
 import { FilesystemService } from "../lib/services/FilesystemService";
 
 export default defineComponent({
+  components: { TrackItem },
   data() {
     return {
       tracks: [] as Track[],
@@ -36,10 +35,6 @@ export default defineComponent({
       );
   },
 
-  methods: {
-    play(track: Track) {
-      track.play.bind(track)();
-    },
-  },
+  methods: {},
 });
 </script>

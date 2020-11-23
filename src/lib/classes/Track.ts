@@ -3,6 +3,7 @@ import nodeID3, {
   read as readTags,
   update as updateTags,
 } from "node-id3";
+import { Player } from "./Player";
 import { TrackPlayback } from "./TrackPlayback";
 
 export class Track {
@@ -37,19 +38,6 @@ export class Track {
   }
 
   public play() {
-    console.log(`Playing ${this.toString()}...`);
-    this.playback.play();
-  }
-
-  public stop() {
-    this.playback.stop();
-  }
-
-  public pause() {
-    this.playback.pause();
-  }
-
-  public playPause() {
-    this.playback.playPause();
+    Player.getInstance().play(this.playback);
   }
 }

@@ -3,11 +3,7 @@
     <div v-if="tracks.length">
       <li v-for="track in tracks" :key="track">
         {{ track.toString() }}
-        <button @click="playPause(track)">
-          <span v-if="track.isPlaying">Pause</span>
-          <span v-else>Play</span>
-        </button>
-        <button @click="stop(track)">Stop</button>
+        <button @click="play(track)">Play</button>
       </li>
     </div>
   </div>
@@ -41,16 +37,8 @@ export default defineComponent({
   },
 
   methods: {
-    playPause(track: Track) {
-      track.playPause.bind(track)();
-    },
-
-    stop(track: Track) {
-      track.stop.bind(track)();
-    },
-
-    pause(track: Track) {
-      track.pause.bind(track)();
+    play(track: Track) {
+      track.play.bind(track)();
     },
   },
 });

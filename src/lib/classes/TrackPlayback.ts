@@ -1,11 +1,26 @@
 import { readFileSync } from "fs";
 import { createDataURL, MimeAudioFormat } from "../dataUrl";
+import { EventEmitter } from "../EventEmitter";
 
-export class TrackPlayback {
+export type PlaybackEventListener = (playback: TrackPlayback) => void;
+
+export interface PlaybackEventListeners {
+  play: PlaybackEventListener[];
+  pause: PlaybackEventListener[];
+  ended: PlaybackEventListener[];
+}
+
+export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
   private audioElement?: HTMLAudioElement;
   public isPlaying = false;
 
-  constructor(private path: string) {}
+  constructor(private path: string) {
+    super({
+      play: [],
+      pause: [],
+      ended: [],
+    });
+  }
 
   play() {
     if (this.audioElement) {
@@ -32,7 +47,6 @@ export class TrackPlayback {
   }
 
   playPause() {
-    console.log(this.isPlaying);
     if (this.isPlaying) this.pause();
     else this.play();
   }
@@ -43,14 +57,17 @@ export class TrackPlayback {
 
     audioElement.onended = (() => {
       this.isPlaying = false;
+      this.triggerEvent("ended");
     }).bind(this);
 
     audioElement.onplay = (() => {
       this.isPlaying = true;
+      this.triggerEvent("play");
     }).bind(this);
 
     audioElement.onpause = (() => {
       this.isPlaying = false;
+      this.triggerEvent("pause");
     }).bind(this);
 
     return audioElement;

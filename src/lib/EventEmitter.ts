@@ -12,7 +12,7 @@ export abstract class EventEmitter<Listeners extends object> {
     callback: ListenerFunction
   ) {
     if (event instanceof Array) {
-      for (let _event of event) {
+      for (const _event of event) {
         (this.listeners[_event] as any).push(callback);
       }
     } else {
@@ -21,7 +21,7 @@ export abstract class EventEmitter<Listeners extends object> {
   }
 
   protected triggerEvent(event: keyof Listeners, ...args: any[]) {
-    for (let listener of this.listeners[event] as any) {
+    for (const listener of this.listeners[event] as any) {
       listener(this, ...args);
     }
   }

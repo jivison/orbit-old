@@ -8,6 +8,7 @@ export interface PlaybackEventListeners {
   play: PlaybackEventListener[];
   pause: PlaybackEventListener[];
   ended: PlaybackEventListener[];
+  timeUpdate: ((playback: TrackPlayback, currentTime: number) => void)[];
 }
 
 export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
@@ -19,6 +20,7 @@ export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
       play: [],
       pause: [],
       ended: [],
+      timeUpdate: [],
     });
   }
 
@@ -54,21 +56,26 @@ export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
   private createAudioElement(dataURL: string): HTMLAudioElement {
     const audioElement = document.createElement("audio");
     audioElement.src = dataURL;
+    audioElement.volume = 0;
 
-    audioElement.onended = (() => {
+    audioElement.onended = () => {
       this.isPlaying = false;
       this.triggerEvent("ended");
-    }).bind(this);
+    };
 
-    audioElement.onplay = (() => {
+    audioElement.onplay = () => {
       this.isPlaying = true;
       this.triggerEvent("play");
-    }).bind(this);
+    };
 
-    audioElement.onpause = (() => {
+    audioElement.onpause = () => {
       this.isPlaying = false;
       this.triggerEvent("pause");
-    }).bind(this);
+    };
+
+    audioElement.ontimeupdate = (e) => {
+      this.triggerEvent("timeUpdate", e);
+    };
 
     return audioElement;
   }

@@ -1,3 +1,4 @@
+import { readFileSync } from "fs";
 import nodeID3, {
   Tags,
   read as readTags,
@@ -5,9 +6,10 @@ import nodeID3, {
 } from "node-id3";
 import { Player } from "./Player";
 import { TrackPlayback } from "./TrackPlayback";
+import mp3Duration from "mp3-duration";
 
 export class Track {
-  public tags: Tags = {};
+  public tags: Tags & { duration?: number } = {};
   public filepath: string;
   public playback: TrackPlayback;
 
@@ -22,7 +24,13 @@ export class Track {
   }
 
   private loadTags() {
-    this.tags = readTags.bind(nodeID3)(this.filepath);
+    const file = readFileSync(this.filepath);
+    this.tags = readTags.bind(nodeID3)(file);
+    mp3Duration(file, (err, duration) => {
+      // console.log("Duration: ", duration);
+      // console.log("Err: ", err);
+      this.tags.duration = duration;
+    });
   }
 
   public updateTags(tags: Tags): Tags {

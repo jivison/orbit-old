@@ -16,6 +16,7 @@ export class Player extends EventEmitter<
       play: [],
       pause: [],
       ended: [],
+      timeUpdate: [],
       trackChange: [],
     });
   }
@@ -29,7 +30,7 @@ export class Player extends EventEmitter<
   private playback?: TrackPlayback;
   private track?: Track;
 
-  public isPlaying: boolean = false;
+  public isPlaying = false;
 
   private setPlayback(track: Track) {
     if (this.track === track) return;
@@ -40,26 +41,21 @@ export class Player extends EventEmitter<
     if (this.playback?.isPlaying) this.playback.stop();
     this.playback = playback;
 
-    this.playback.on(
-      "pause",
-      (() => {
-        this.triggerEvent("pause");
-      }).bind(this)
-    );
+    this.playback.on("pause", () => {
+      this.triggerEvent("pause");
+    });
 
-    this.playback.on(
-      "ended",
-      (() => {
-        this.triggerEvent("ended");
-      }).bind(this)
-    );
+    this.playback.on("ended", () => {
+      this.triggerEvent("ended");
+    });
 
-    this.playback.on(
-      "play",
-      (() => {
-        this.triggerEvent("play");
-      }).bind(this)
-    );
+    this.playback.on("play", () => {
+      this.triggerEvent("play");
+    });
+
+    this.playback.on("timeUpdate", (_: any, e: any) => {
+      this.triggerEvent("timeUpdate", e);
+    });
   }
 
   public clearPlayback() {

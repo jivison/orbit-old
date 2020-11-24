@@ -56,7 +56,7 @@ export class TrackPlayback extends EventEmitter<PlaybackEventListeners> {
   private createAudioElement(dataURL: string): HTMLAudioElement {
     const audioElement = document.createElement("audio");
     audioElement.src = dataURL;
-    audioElement.volume = 0;
+    // audioElement.volume = 0;
 
     audioElement.onended = () => {
       this.isPlaying = false;

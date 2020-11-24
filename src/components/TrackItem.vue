@@ -1,5 +1,5 @@
 <template>
-  <div class="TrackItem" @dblclick="play(track)">
+  <div class="TrackItem" @dblclick="play(trackIndex)">
     {{ track.tags.title }} - {{ track.tags.artist }}
   </div>
 </template>
@@ -9,11 +9,24 @@ import { Track } from "@/lib/classes/Track";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["track"],
+  props: {
+    track: {
+      type: Track,
+      required: true,
+    },
+    trackIndex: {
+      type: Number,
+      required: true,
+    },
+    onDoubleClick: {
+      type: Function,
+      required: true,
+    },
+  },
 
   methods: {
-    play(track: Track) {
-      track.play.bind(track)();
+    play(trackIndex: number) {
+      this.onDoubleClick(trackIndex);
     },
   },
 });

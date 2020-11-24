@@ -17,6 +17,7 @@
     "glob": "^7.1.6",
     "mp3-duration": "^1.1.0",
     "node-id3": "^0.2.1",
+    "querystring": "^0.2.0",
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",

@@ -1,13 +1,20 @@
 <template>
   <div class="TrackList">
     <div v-if="tracks.length">
-      <track-item v-for="track in tracks" v-bind:track="track" :key="track" />
+      <track-item
+        v-for="(track, index) in tracks"
+        v-bind:track="track"
+        v-bind:trackIndex="index"
+        v-bind:onDoubleClick="onDoubleClick"
+        :key="track"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import TrackItem from "@/components/TrackItem.vue";
+import { Player } from "@/lib/classes/Player";
 import { defineComponent } from "vue";
 import { Track } from "../lib/classes/Track";
 import { FilesystemService } from "../lib/services/FilesystemService";
@@ -35,6 +42,10 @@ export default defineComponent({
       );
   },
 
-  methods: {},
+  methods: {
+    onDoubleClick(trackIndex: number) {
+      Player.getInstance().playWithQueue(this.tracks.slice(trackIndex));
+    },
+  },
 });
 </script>

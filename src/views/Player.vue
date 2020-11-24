@@ -6,12 +6,26 @@
       <div class="controls-container">
         <div class="controls">
           <div>
+            <svg-icon
+              @click="skipBack()"
+              class="player-icon minor-icon"
+              icon="skip-back"
+            />
+          </div>
+          <div class="playpause-button">
             <span v-if="isPlaying" @click="playPause()"
               ><svg-icon class="player-icon" icon="pause"
             /></span>
             <span v-else @click="playPause()"
               ><svg-icon class="player-icon" icon="play"
             /></span>
+          </div>
+          <div>
+            <svg-icon
+              @click="skip()"
+              class="player-icon minor-icon"
+              icon="skip-forward"
+            />
           </div>
           <div class="duration-display">
             {{ displayDuration(currentTime) }} /
@@ -39,7 +53,6 @@
           </div>
         </div>
       </div>
-      <div class="ghost"></div>
     </div>
   </div>
 </template>
@@ -63,6 +76,7 @@ export default defineComponent({
       track: undefined as Track | undefined,
       currentTime: 0,
       totalDuration: 0,
+      looping: false,
     };
   },
 
@@ -84,6 +98,10 @@ export default defineComponent({
     this.player.on("timeUpdate", (_: any, e: Event) => {
       this.currentTime = (e.currentTarget as HTMLAudioElement).currentTime;
     });
+
+    this.player.on("loopingToggle", (_: any, value: boolean) => {
+      this.looping = value;
+    });
   },
 
   methods: {
@@ -93,6 +111,18 @@ export default defineComponent({
 
     stop() {
       this.player.stop.bind(this.player)();
+    },
+
+    skip() {
+      this.player.skip();
+    },
+
+    skipBack() {
+      this.player.skipBack();
+    },
+
+    toggleLooping() {
+      this.player.toggleLooping();
     },
 
     image(track: Track) {
@@ -175,8 +205,17 @@ export default defineComponent({
   }
 }
 
+.minor-icon {
+  font-size: 1.2em;
+}
+
 .entity-name {
   font-size: 0.9em;
+}
+
+.playpause-button {
+  margin-left: 0.7em;
+  margin-right: 0.7em;
 }
 
 .track-image {
@@ -194,6 +233,6 @@ export default defineComponent({
 .duration-display {
   font-size: 0.8em;
   color: grey;
-  margin-left: 1em;
+  margin-left: 1.5em;
 }
 </style>

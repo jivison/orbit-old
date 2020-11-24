@@ -27,8 +27,6 @@ export class Track {
     const file = readFileSync(this.filepath);
     this.tags = readTags.bind(nodeID3)(file);
     mp3Duration(file, (err, duration) => {
-      // console.log("Duration: ", duration);
-      // console.log("Err: ", err);
       this.tags.duration = duration;
     });
   }
